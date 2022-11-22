@@ -1,0 +1,16 @@
+.header {
+
+}
+
+.header__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50px;
+  background: rgb(35 35 35);
+}
+
+.header__title {
+  margin: 0;
+  font-weight: normal;
+}
