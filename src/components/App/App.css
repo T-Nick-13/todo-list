@@ -1,6 +1,8 @@
 :root {
   --page-background: rgb(231 229 229);
-  --page-font-color: #bdc1c6;
+  --header-font-color: #bdc1c6;
+  --page-font-color: #343434;
+  --standart-transition: all 0.3s linear;
 }
 
 .page {

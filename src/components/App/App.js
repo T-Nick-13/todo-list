@@ -3,6 +3,7 @@ import React from 'react';
 import { MAIN_API } from '../../utils/config'; */
 
 import Header from '../Header/Header';
+import TaskList from '../TaskList/TaskList';
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <div className="page">
       <div className="page__container">
         <Header />
+        <TaskList />
       </div>
     </div>
   );
