@@ -10,7 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: var(--content-width);
   max-width: 700px;
   border-bottom: 1px solid var(--header-font-color);
 }

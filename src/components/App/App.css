@@ -3,6 +3,7 @@
   --header-font-color: #bdc1c6;
   --page-font-color: #343434;
   --standart-transition: all 0.3s linear;
+  --content-width: 90%;
 }
 
 .page {

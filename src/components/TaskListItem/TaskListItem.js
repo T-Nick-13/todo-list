@@ -12,11 +12,11 @@ function TaskListItem(props) {
 
   return (
     <li className="task-list__item">
-      <div className="task-list__container">
+      <div className="task-list__container" /* onClick={openTask} */>
         <button className="task__btn task-list__btn" title="выполнить">
           <img src={completeLogo} alt="complete" className="task-list__complete-logo"></img>
         </button>
-        <h3 className="task__title task-list__title" onClick={openTask}>Задача №1</h3>
+        <h3 className="task__title task-list__title" onClick={openTask} title="открыть задачу">Задача №1</h3>
       </div>
       <div className="task-list__tools">
         <img src={editLogo} alt="edit" title="редактировать"></img>

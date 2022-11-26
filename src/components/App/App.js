@@ -9,15 +9,18 @@ import Task from '../Task/Task';
 
 function App() {
 
-  const [activePopup, setActivePopup] = React.useState(false);
+  const [activeTask, setActiveTask] = React.useState(false);
+  const [newActiveTask, setNewActiveTask] = React.useState(false);
 
   function closePopup() {
-    setActivePopup(false);
+    setActiveTask(false);
   }
 
   function openTask() {
-    setActivePopup(true);
+    setActiveTask(true);
   }
+
+
 
   React.useEffect(() => {
     function handleEscClose(evt) {
@@ -37,12 +40,14 @@ function App() {
   return (
     <div className="page">
       <div className="page__container">
-        <Header />
+        <Header
+          onBtnClick={openTask}
+        />
         <TaskList
           openTask={openTask}
         />
         <Task
-          activePopup={activePopup}
+          activeTask={activeTask}
           onPopupClose={closePopup}
         />
       </div>

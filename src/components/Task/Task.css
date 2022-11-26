@@ -137,6 +137,24 @@
   opacity: 0.7;
 }
 
+.btn-cross {
+  border: none;
+}
+
+.btn-cross:hover {
+  background: #3c3c3c;
+  cursor: pointer;
+}
+
+.btn-cross svg {
+  display: block;
+}
+
+.btn-cross svg line {
+  stroke: #8B8B8B;
+  stroke-width: 5;
+}
+
 .popup__close-btn {
   position: absolute;
   top: 15px;
@@ -144,23 +162,11 @@
   padding: 8px;
   border-radius: 50%;
   background: none;
-  border: none;
   transition: var(--standart-transition);
 }
 
-.popup__close-btn:hover {
-  background: #3c3c3c;
-  cursor: pointer;
-}
-
- .popup__close-btn svg {
-  display: block;
+.popup__close-btn svg {
   width: 18px;
-}
-
-.popup__close-btn svg line {
-  stroke: #8B8B8B;
-  stroke-width: 5;
 }
 
 .popup__btn-container {
