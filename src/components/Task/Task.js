@@ -6,7 +6,7 @@ import uploadLogo from '../../images/icons8-загрузить-32.png';
 function Task(props) {
 
   const activePopup = props.activePopup ? 'popup popup_active' : 'popup';
-  //const activeForm = props.activePopup ? 'popup__form popup__form_active' : 'popup__form';
+  const activeForm = props.activePopup ? 'popup__form popup__form_active' : 'popup__form';
 
 
   function closePopup() {
@@ -20,7 +20,7 @@ function Task(props) {
 
   return (
     <div className={activePopup}>
-      <form className="popup__form popup__form_active" noValidate onSubmit={submitSave}>
+      <form className={activeForm} noValidate onSubmit={submitSave}>
         <div className="popup__container">
           <label className="popup__label">Название задачи
             <img src={taskLogo} className="popup__img" alt="task"></img>
@@ -42,7 +42,7 @@ function Task(props) {
             <div className="task__status task-list__status" title="статус">Ожидание</div>
           </div>
         </div>
-        <button className="popup__close-btn" type="button" /* onClick={props.onClose} */>
+        <button className="popup__close-btn" type="button" onClick={closePopup}>
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <line x1="0" x2="100" y1="0" y2="100" />
             <line x1="0" x2="100" y1="100" y2="0" />

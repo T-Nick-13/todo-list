@@ -4,8 +4,11 @@ import completeLogo from '../../images/free-icon-tick-3106690.png';
 import editLogo from '../../images/free-icon-edit-157325.png';
 import deletetLogo from '../../images/free-icon-delete-4974628.png';
 
-function TaskListItem() {
+function TaskListItem(props) {
 
+  function openTask() {
+    props.onTaskClick();
+  }
 
   return (
     <li className="task-list__item">
@@ -13,7 +16,7 @@ function TaskListItem() {
         <button className="task__btn task-list__btn" title="выполнить">
           <img src={completeLogo} alt="complete" className="task-list__complete-logo"></img>
         </button>
-        <h3 className="task__title task-list__title">Задача №1</h3>
+        <h3 className="task__title task-list__title" onClick={openTask}>Задача №1</h3>
       </div>
       <div className="task-list__tools">
         <img src={editLogo} alt="edit" title="редактировать"></img>
