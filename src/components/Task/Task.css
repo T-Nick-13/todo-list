@@ -133,6 +133,12 @@
   transition: var(--standart-transition);
 }
 
+.popup__file-name {
+  position: absolute;
+  left: 145px;
+  top: 31px;
+}
+
 .popup__label-upload:hover {
   opacity: 0.7;
 }

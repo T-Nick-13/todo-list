@@ -1,6 +1,6 @@
 import React from 'react';
-/* import Api from '../../utils/Api';
-import { MAIN_API } from '../../utils/config'; */
+import Api from '../../utils/Api';
+import { MAIN_API } from '../../utils/config';
 
 import Header from '../Header/Header';
 import TaskList from '../TaskList/TaskList';
@@ -12,6 +12,13 @@ function App() {
   const [activeTask, setActiveTask] = React.useState(false);
   const [newActiveTask, setNewActiveTask] = React.useState(false);
 
+  const api = new Api ({
+    baseUrl: MAIN_API,
+    /* headers: {
+      'Content-Type': 'application/json'
+    }, */
+  })
+
   function closePopup() {
     setActiveTask(false);
   }
@@ -20,7 +27,21 @@ function App() {
     setActiveTask(true);
   }
 
+  function createTask(taskData, fileData, fileLatName) {
 
+    const data = new FormData();
+    data.append('title', taskData.title);
+    data.append('description', taskData.description);
+    data.append('fileData', fileData, fileLatName);
+
+    api.createTask(data)
+      .then(() => {
+        closePopup();
+    })
+      .catch((err) => {
+      console.log(err)
+      })
+  }
 
   React.useEffect(() => {
     function handleEscClose(evt) {
@@ -49,6 +70,7 @@ function App() {
         <Task
           activeTask={activeTask}
           onPopupClose={closePopup}
+          onSubmit={createTask}
         />
       </div>
     </div>
