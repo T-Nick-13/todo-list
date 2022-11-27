@@ -13,6 +13,8 @@ function TaskList(props) {
             title={i.title}
             key={i._id}
             task={i}
+            term={i.term}
+            status={i.status}
           />
         )
       })}

@@ -2,6 +2,8 @@ import React from 'react';
 import taskLogo from '../../images/icons8-список-задач-50.png';
 import desckLogo from '../../images/icons8-содержание-24.png';
 import uploadLogo from '../../images/icons8-загрузить-32.png';
+import dayjs from 'dayjs';
+
 
 function Task(props) {
 
@@ -9,7 +11,9 @@ function Task(props) {
   const [fileData, setFileData] = React.useState('');
   const [taskData, setTaskData] = React.useState({
     title: '',
-    description: ''
+    description: '',
+    term: '',
+    status: ''
   })
   const [fileName, setFileName] = React.useState('');
   const [fileLatName, setFileLatName] = React.useState('');
@@ -31,13 +35,21 @@ function Task(props) {
   }
 
   function clearInputs() {
-    props.task ? setTaskData({
-      title: props.task.title,
-      description: props.task.description,
-    }) : setTaskData({
-      title: '',
-      description: '',
-    }) && setFileData('');
+    if (props.task) {
+      setTaskData({
+        title: props.task.title,
+        description: props.task.description,
+        term: props.task.term,
+        status: props.task.status
+      })
+    } else {
+      setTaskData({
+        title: '',
+        description: '',
+      })
+      setFileData('');
+      setFileName('');
+    }
 
   }
 
@@ -60,8 +72,7 @@ function Task(props) {
 
   function submitSave(e) {
     e.preventDefault();
-    console.log(props.task)
-    //props.onSubmit(taskData, fileData, fileLatName);
+    props.onSubmit(taskData, fileData, fileLatName);
     clearInputs();
 
   }
@@ -100,33 +111,46 @@ function Task(props) {
     <div className={activeTask} /* onClick={closePopup} */>
       <form className={activeForm} noValidate onSubmit={submitSave}>
         <div className="popup__container">
+
           <label className="popup__label">Название задачи
             <img src={taskLogo} className="popup__img" alt="task"></img>
             <input id="title" className="popup__input" name="title" type="text" onChange={handleChange}
               value={taskData.title}/>
           </label>
+
           <label className="popup__label popup__label_text">Описание
             <img src={desckLogo} className="popup__img" alt="description"></img>
             <textarea id="description" className="popup__textarea" name="description" onChange={handleChange}
               value={taskData.description} />
           </label>
+
           <div className="popup__label">Вложение
             <img src={uploadLogo} className="popup__img" alt="upload"></img>
-            <input className="popup__input-upload" id="popup__input" type="file" /* accept="image/*" */ onChange={handleFileChange}/>
+            <input className="popup__input-upload" id="popup__input" type="file" onChange={handleFileChange}/>
             <label className="popup__label-upload" htmlFor="popup__input">Выберите файл</label>
             <span className="popup__file-name">{fileName}</span>
           </div>
+
           <div className="popup__info-container">
-            <div className="task__term task-list__term" title="срок выполнения">23.11.22</div>
-            <div className="task__status task-list__status" title="статус">Ожидание</div>
+            <input type="date" className="task__term task-list__term" id="term" name="term"
+              value={dayjs(taskData.term).format('YYYY-MM-DD')} onChange={handleChange} />
+
+            <select className="task__status task-list__status" onChange={handleChange}
+              name="status" value={taskData.status}>
+              <option value="Ожидание">Ожидание</option>
+              <option value="В работе">В работе</option>
+              <option value="Выполнено">Выполнено</option>
+            </select>
           </div>
         </div>
+
         <button className="popup__close-btn btn-cross" type="button" onClick={closePopup}>
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <line x1="0" x2="100" y1="0" y2="100" />
             <line x1="0" x2="100" y1="100" y2="0" />
           </svg>
         </button>
+
         <div className="popup__btn-container">
           <button className="popup__btn" type="submit">Сохранить</button>
           <button className="popup__btn" type="button" onClick={closePopup}>Отмена</button>

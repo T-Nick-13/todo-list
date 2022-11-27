@@ -12,6 +12,12 @@ const taskSchema = new mongoose.Schema({
   },
   file: {
     type: String,
+  },
+  term: {
+    type: Date,
+  },
+  status: {
+    type: String,
   }
 });
 

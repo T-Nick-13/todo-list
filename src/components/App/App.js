@@ -47,6 +47,9 @@ function App() {
     data.append('title', taskData.title);
     data.append('description', taskData.description);
     data.append('fileData', fileData, fileLatName);
+    data.append('term', taskData.term);
+    data.append('status', taskData.status);
+
 
     api.createTask(data)
       .then(() => {

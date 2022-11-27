@@ -20,11 +20,11 @@ const createTask = (req, res) => {
   }) */
 
   const path = 'http://localhost:3005/' + 'pictures/' + req.files[0].filename;
-  console.log(path);
   debugger
 
   const newTask = req.body;
-  Task.create({ title: newTask.title, description: newTask.description, file: path })
+  Task.create({ title: newTask.title, description: newTask.description, file: path,
+    term: newTask.term, status: newTask.status })
     .then((card) => res.send(card))
     .catch((err) => {
       throw err;

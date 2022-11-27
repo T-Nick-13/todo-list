@@ -59,16 +59,42 @@
 .task-list__term {
   background: #c2c2c2;
   border-radius: 7px;
-  padding: 3px 7px;
-  font-size: 15px;
+  padding: 3px;
+  font-size: 14px;
+  border: none;
+  width: 105px;
+  outline: none;
+  box-sizing: border-box;
+  transition: var(--standart-transition);
+}
+
+.task-list__term:hover {
+  opacity: 0.8;
 }
 
 .task-list__status {
   color: #13511d;
   background: #4ab853;
   border-radius: 7px;
-  padding: 3px 7px;
-  font-size: 15px;
+  padding: 3px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  width: 105px;
+  box-sizing: border-box;
+  transition: var(--standart-transition);
+}
+
+.task-list__status:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.task-list__status option {
+  background: #fff;
 }
 
 .task-list__status_pending {
