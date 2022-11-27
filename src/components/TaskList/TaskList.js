@@ -6,10 +6,16 @@ function TaskList(props) {
 
   return (
     <ul className="task-list">
-      <TaskListItem
-        onTaskClick={props.openTask}
-      />
-      <TaskListItem />
+      {props.taskList.map((i) => {
+        return (
+          <TaskListItem
+            onTaskClick={props.openTask}
+            title={i.title}
+            key={i._id}
+            task={i}
+          />
+        )
+      })}
     </ul>
   );
 }

@@ -14,10 +14,12 @@ function Task(props) {
   const [fileName, setFileName] = React.useState('');
   const [fileLatName, setFileLatName] = React.useState('');
 
+  React.useEffect(() => {
+    clearInputs();
+  }, [props.task]);
 
   const activeTask = props.activeTask ? 'popup popup_active' : 'popup';
   const activeForm = props.activeTask ? 'popup__form popup__form_active' : 'popup__form';
-
 
   function checkFileType(file) {
     if (file.size <= 5242880) {
@@ -28,8 +30,20 @@ function Task(props) {
       } else alert(`Размер файла должен быть до 5мб. Текущий размер ${file.size}`);
   }
 
+  function clearInputs() {
+    props.task ? setTaskData({
+      title: props.task.title,
+      description: props.task.description,
+    }) : setTaskData({
+      title: '',
+      description: '',
+    }) && setFileData('');
+
+  }
+
   function closePopup() {
     props.onPopupClose();
+    clearInputs();
   }
 
   function handleFileChange(e) {
@@ -46,7 +60,10 @@ function Task(props) {
 
   function submitSave(e) {
     e.preventDefault();
-    props.onSubmit(taskData, fileData, fileLatName);
+    console.log(props.task)
+    //props.onSubmit(taskData, fileData, fileLatName);
+    clearInputs();
+
   }
 
   function translit(word){
@@ -76,24 +93,22 @@ function Task(props) {
         answer += converter[word[i]];
       }
     }
-
     return answer;
   }
 
-
   return (
-    <div className={activeTask}>
+    <div className={activeTask} /* onClick={closePopup} */>
       <form className={activeForm} noValidate onSubmit={submitSave}>
         <div className="popup__container">
           <label className="popup__label">Название задачи
             <img src={taskLogo} className="popup__img" alt="task"></img>
             <input id="title" className="popup__input" name="title" type="text" onChange={handleChange}
-              /* value={data.email} onChange={handleChange} */ />
+              value={taskData.title}/>
           </label>
           <label className="popup__label popup__label_text">Описание
             <img src={desckLogo} className="popup__img" alt="description"></img>
             <textarea id="description" className="popup__textarea" name="description" onChange={handleChange}
-              /* value={data.email} onChange={handleChange} */ />
+              value={taskData.description} />
           </label>
           <div className="popup__label">Вложение
             <img src={uploadLogo} className="popup__img" alt="upload"></img>

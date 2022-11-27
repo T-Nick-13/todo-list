@@ -22,7 +22,7 @@ export default class Api {
     return Promise.reject(res)
   }
 
-  getCards() {
+  getTasks() {
     return fetch(`${this._url}`, {
       headers: this._headers
     })

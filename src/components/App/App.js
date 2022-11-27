@@ -6,11 +6,12 @@ import Header from '../Header/Header';
 import TaskList from '../TaskList/TaskList';
 import Task from '../Task/Task';
 
-
 function App() {
 
   const [activeTask, setActiveTask] = React.useState(false);
   const [newActiveTask, setNewActiveTask] = React.useState(false);
+  const [taskList, setTaskList] = React.useState([]);
+  const [task, setTask] = React.useState();
 
   const api = new Api ({
     baseUrl: MAIN_API,
@@ -19,16 +20,29 @@ function App() {
     }, */
   })
 
+  React.useEffect(() => {
+    Promise.all([
+      api.getTasks()
+    ])
+    .then(([tasks]) => {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      setTaskList(JSON.parse(localStorage.getItem('tasks')));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }, [])
+
   function closePopup() {
     setActiveTask(false);
   }
 
-  function openTask() {
+  function openTask(task) {
     setActiveTask(true);
+    setTask(task);
   }
 
   function createTask(taskData, fileData, fileLatName) {
-
     const data = new FormData();
     data.append('title', taskData.title);
     data.append('description', taskData.description);
@@ -44,13 +58,13 @@ function App() {
   }
 
   React.useEffect(() => {
-    function handleEscClose(evt) {
-      if (evt.key === 'Escape') {
+    function handleEscClose(e) {
+      if (e.key === 'Escape') {
         closePopup();
       }
     }
-    function handleOverlayClose (evt) {
-      if (evt.target.classList.contains('popup_active')) {
+    function handleOverlayClose (e) {
+      if (e.target.classList.contains('popup_active')) {
         closePopup();
       }
     }
@@ -66,11 +80,13 @@ function App() {
         />
         <TaskList
           openTask={openTask}
+          taskList={taskList}
         />
         <Task
           activeTask={activeTask}
           onPopupClose={closePopup}
           onSubmit={createTask}
+          task={task}
         />
       </div>
     </div>
