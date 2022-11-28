@@ -3,5 +3,6 @@
 @import url(./components/Header/Header.css);
 @import url(./components/Task/Task.css);
 @import url(./components/TaskList/TaskList.css);
+@import url(./components/PopupDel/PopupDel.css);
 
 

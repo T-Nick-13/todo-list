@@ -5,6 +5,7 @@ import { MAIN_API } from '../../utils/config';
 import Header from '../Header/Header';
 import TaskList from '../TaskList/TaskList';
 import Task from '../Task/Task';
+import PopupDel from '../PopupDel/PopupDel';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
   const [newActiveTask, setNewActiveTask] = React.useState(false);
   const [taskList, setTaskList] = React.useState([]);
   const [task, setTask] = React.useState();
+  const [activePopupDel, setActivePopupDel] = React.useState(false);
 
   const api = new Api ({
     baseUrl: MAIN_API,
@@ -35,6 +37,7 @@ function App() {
 
   function closePopup() {
     setActiveTask(false);
+    setActivePopupDel(false);
   }
 
   function openTask(task) {
@@ -75,7 +78,24 @@ function App() {
           console.log(err)
         })
     }
+  }
 
+  function deleteTask(task) {
+
+    api.deleteTask(task._id)
+      .then(() => {
+        console.log(task._id);
+        closePopup();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
+  }
+
+  function openPopupDel(task) {
+    setActivePopupDel(true);
+    setTask(task);
   }
 
   React.useEffect(() => {
@@ -102,11 +122,18 @@ function App() {
         <TaskList
           openTask={openTask}
           taskList={taskList}
+          openPopupDel={openPopupDel}
         />
         <Task
           activeTask={activeTask}
           onPopupClose={closePopup}
           onSubmit={createTask}
+          task={task}
+        />
+        <PopupDel
+          activePopupDel={activePopupDel}
+          onSubmit={deleteTask}
+          onPopupClose={closePopup}
           task={task}
         />
       </div>

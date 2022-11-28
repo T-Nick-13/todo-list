@@ -21,6 +21,9 @@ const taskSchema = new mongoose.Schema({
   },
   fileName: {
     type: String,
+  },
+  filePath: {
+    type: String,
   }
 });
 

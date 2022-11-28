@@ -19,6 +19,10 @@ function TaskListItem(props) {
     }); */
   }
 
+  function openPopupDel() {
+    props.onDeleteClick(props.task);
+  }
+
   const statusClass = (props.status === 'В работе') ? 'task-list__status task-list__status_pending' :
     (props.status === 'Выполнено') ? 'task-list__status task-list__status_complete' : 'task-list__status';
 
@@ -35,7 +39,7 @@ function TaskListItem(props) {
 
       <div className="task-list__tools">
         <img src={editLogo} alt="edit" title="редактировать" onClick={openTask}></img>
-        <img src={deletetLogo} alt="delete" title="удалить"></img>
+        <img src={deletetLogo} alt="delete" title="удалить" onClick={openPopupDel}></img>
       </div>
 
       <input type="date" className="task__term task-list__term" id="term" name="term"

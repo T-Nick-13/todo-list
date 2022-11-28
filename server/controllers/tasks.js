@@ -12,54 +12,52 @@ const getTasks = (req, res, next) => {
 }
 
 const createTask = (req, res) => {
-  const path = (req.files.length > 0) ? 'http://localhost:3005/' + 'files/' + req.files[0].filename : '';
+  const file = (req.files.length > 0) ? 'http://localhost:3005/' + 'files/' + req.files[0].filename : '';
   const filName = (req.files.length > 0) ? req.files[0].originalname : '';
-  const newTask = req.body;
-  debugger
-  Task.create({ title: newTask.title, description: newTask.description, file: path,
-    term: newTask.term, status: newTask.status, fileName: filName})
+  const filPath = (req.files.length > 0) ? 'public/files/' + req.files[0].filename: '';
+  const { title, description, term, status  } = req.body;
+
+  Task.create({ title, description, file: file, term, status, fileName: filName, filePath: filPath})
     .then((card) => res.send(card))
     .catch((err) => {
       throw err;
   })
 }
 
-const deleteCard = (req, res, next) => {
-  const cardId = req.params.cardId.split(',').map((card) => {
-    return card;
-  })
+const deleteTask = (req, res, next) => {
+  const { taskId } = req.params;
 
-  Task.find({ _id: {$in : cardId}})
-    .orFail(new NotFound('Нет фильма с таким id'))
-    .then((card) => {
-      card.forEach((c) => {
-        c.remove()
-          .then((card) => {
-            fs.unlink(card.filePath, function(err){
-              if (err) {
-                console.log(err);
-              } else {
-                console.log("Файл удалён");
-              }
-            })
+  Task.findById(taskId)
+    .orFail(new NotFound('Задача не найдена'))
+    .then((task) => {
+      task.remove()
+        .then((task) => {
+          fs.unlink(task.filePath, function(err){
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("Файл удалён");
+            }
           })
         })
-        res.send(card);
+        .then((task) => res.send({ task }))
+        .catch(next);
     })
     .catch((err) => {
       throw err;
     })
+    .catch(next);
 }
 
 const editTask = (req, res, next) => {
   const { title, description, term, status, id } = req.body;
   const file = (req.files.length > 0) ? 'http://localhost:3005/' + 'files/' + req.files[0].filename : req.body.file;
   const filName = (req.files.length > 0) ? req.files[0].originalname : req.body.fileName;
+  const filPath = (req.files.length > 0) ? 'public/files' + req.files[0].filename: '';
 
-  debugger
   Task.findByIdAndUpdate(
     id,
-    { title, description, file, term, status, filName },
+    { title, description, file, term, status, filName, filPath },
     {
       new: true,
       runValidators: true,
@@ -82,5 +80,5 @@ const editTask = (req, res, next) => {
 
 
 module.exports = {
-  createTask, getTasks, deleteCard, editTask
+  createTask, getTasks, deleteTask, editTask
 };

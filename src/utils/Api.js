@@ -37,10 +37,9 @@ export default class Api {
     .then(this._checkServerResponse);
   }
 
-  deleteCard(cardId) {
-    return fetch(`${this._url}/${cardId}`, {
-      method: 'DELETE',
-      headers: this._headers
+  deleteTask(taskId) {
+    return fetch(`${this._url}/${taskId}`, {
+      method: 'DELETE'
     })
     .then(this._checkServerResponse);
   }
