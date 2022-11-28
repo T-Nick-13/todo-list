@@ -12,19 +12,12 @@ const getTasks = (req, res, next) => {
 }
 
 const createTask = (req, res) => {
-  /* const newcard = req.files.map((f) => {
-    const path = f.path.replace(/\\/g, '/');
-    const name = Array.isArray(req.body.name) ? req.body.name[req.files.indexOf(f)] : req.body.name;
-    const tag = Array.isArray(req.body.tag) ? req.body.tag[req.files.indexOf(f)] : req.body.tag;
-    return { nameEn: name, tag: tag, link: 'https://api.stafeeva.site/' + 'pictures/' + f.filename, filePath: path }
-  }) */
-
-  const path = 'http://localhost:3005/' + 'pictures/' + req.files[0].filename;
-  debugger
-
+  const path = (req.files.length > 0) ? 'http://localhost:3005/' + 'files/' + req.files[0].filename : '';
+  const filName = (req.files.length > 0) ? req.files[0].originalname : '';
   const newTask = req.body;
+  debugger
   Task.create({ title: newTask.title, description: newTask.description, file: path,
-    term: newTask.term, status: newTask.status })
+    term: newTask.term, status: newTask.status, fileName: filName})
     .then((card) => res.send(card))
     .catch((err) => {
       throw err;
@@ -58,7 +51,36 @@ const deleteCard = (req, res, next) => {
     })
 }
 
+const editTask = (req, res, next) => {
+  const { title, description, term, status, id } = req.body;
+  const file = (req.files.length > 0) ? 'http://localhost:3005/' + 'files/' + req.files[0].filename : req.body.file;
+  const filName = (req.files.length > 0) ? req.files[0].originalname : req.body.fileName;
+
+  debugger
+  Task.findByIdAndUpdate(
+    id,
+    { title, description, file, term, status, filName },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .then((u) => {
+      if (!u) {
+        throw new NotFound('Задача не найдена');
+      }
+      return res.send(u);
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new BadRequest('Введены некорректные данные');
+      }
+      throw err;
+    })
+    .catch(next);
+};
+
 
 module.exports = {
-  createTask, getTasks, deleteCard
+  createTask, getTasks, deleteCard, editTask
 };

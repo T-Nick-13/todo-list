@@ -11,6 +11,17 @@ function TaskListItem(props) {
     props.onTaskClick(props.task);
   }
 
+  function handleChange(e) {
+    const {name, value} = e.target;
+    /* setTaskData({
+      ...taskData,
+      [name]: value
+    }); */
+  }
+
+  const statusClass = (props.status === 'В работе') ? 'task-list__status task-list__status_pending' :
+    (props.status === 'Выполнено') ? 'task-list__status task-list__status_complete' : 'task-list__status';
+
   return (
     <li className="task-list__item">
       <div className="task-list__container">
@@ -23,14 +34,14 @@ function TaskListItem(props) {
       </div>
 
       <div className="task-list__tools">
-        <img src={editLogo} alt="edit" title="редактировать"></img>
+        <img src={editLogo} alt="edit" title="редактировать" onClick={openTask}></img>
         <img src={deletetLogo} alt="delete" title="удалить"></img>
       </div>
 
       <input type="date" className="task__term task-list__term" id="term" name="term"
-        value={dayjs(props.term).format('YYYY-MM-DD')} />
+        value={dayjs(props.term).format('YYYY-MM-DD')} onChange={handleChange}/>
 
-      <select className="task__status task-list__status" name="status" value={props.status}>
+      <select className={statusClass} name="status" value={props.status} onChange={handleChange}>
         <option value="Ожидание">Ожидание</option>
         <option value="В работе">В работе</option>
         <option value="Выполнено">Выполнено</option>

@@ -42,22 +42,40 @@ function App() {
     setTask(task);
   }
 
-  function createTask(taskData, fileData, fileLatName) {
+  function createTask(taskData, fileData, fileLatName, task) {
+
     const data = new FormData();
     data.append('title', taskData.title);
     data.append('description', taskData.description);
-    data.append('fileData', fileData, fileLatName);
+    if (fileData) {
+      data.append('fileData', fileData, fileLatName);
+    }
     data.append('term', taskData.term);
     data.append('status', taskData.status);
+    if (task) {
+      data.append('id', task._id);
+      data.append('file', task.file);
+      data.append('fileName', task.fileName);
+    }
 
+    if (task) {
+      api.editTask(data)
+        .then(() => {
+          closePopup();
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      api.createTask(data)
+        .then(() => {
+          closePopup();
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
 
-    api.createTask(data)
-      .then(() => {
-        closePopup();
-    })
-      .catch((err) => {
-      console.log(err)
-      })
   }
 
   React.useEffect(() => {

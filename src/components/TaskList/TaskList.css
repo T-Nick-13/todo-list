@@ -73,8 +73,7 @@
 }
 
 .task-list__status {
-  color: #13511d;
-  background: #4ab853;
+  background: #c2c2c2;
   border-radius: 7px;
   padding: 3px;
   font-size: 14px;
@@ -98,12 +97,12 @@
 }
 
 .task-list__status_pending {
-  color: #98892c;
-  background: #edd43b;
+  color: #665b1a;
+  background: #dfc83f;
 }
 
 .task-list__status_complete {
-  color: #13511d;
+  color: #0d3b14;
   background: #4ab853;
 }
 

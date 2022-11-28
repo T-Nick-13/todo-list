@@ -24,6 +24,8 @@ function Task(props) {
 
   const activeTask = props.activeTask ? 'popup popup_active' : 'popup';
   const activeForm = props.activeTask ? 'popup__form popup__form_active' : 'popup__form';
+  const statusClass = (taskData.status === 'В работе') ? 'task-list__status task-list__status_pending' :
+    (taskData.status === 'Выполнено') ? 'task-list__status task-list__status_complete' : 'task-list__status';
 
   function checkFileType(file) {
     if (file.size <= 5242880) {
@@ -40,12 +42,16 @@ function Task(props) {
         title: props.task.title,
         description: props.task.description,
         term: props.task.term,
-        status: props.task.status
+        status: props.task.status,
+        file: props.task.file,
+        fileName: props.task.fileName
       })
     } else {
       setTaskData({
         title: '',
         description: '',
+        term: '',
+        status: '',
       })
       setFileData('');
       setFileName('');
@@ -72,9 +78,8 @@ function Task(props) {
 
   function submitSave(e) {
     e.preventDefault();
-    props.onSubmit(taskData, fileData, fileLatName);
+    props.onSubmit(taskData, fileData, fileLatName, props.task);
     clearInputs();
-
   }
 
   function translit(word){
@@ -128,14 +133,15 @@ function Task(props) {
             <img src={uploadLogo} className="popup__img" alt="upload"></img>
             <input className="popup__input-upload" id="popup__input" type="file" onChange={handleFileChange}/>
             <label className="popup__label-upload" htmlFor="popup__input">Выберите файл</label>
-            <span className="popup__file-name">{fileName}</span>
+            {/* <span className="popup__file-name">{fileName}</span> */}
+            <a className="popup__file-name" href={taskData.file} download>{taskData.fileName}</a>
           </div>
 
           <div className="popup__info-container">
             <input type="date" className="task__term task-list__term" id="term" name="term"
               value={dayjs(taskData.term).format('YYYY-MM-DD')} onChange={handleChange} />
 
-            <select className="task__status task-list__status" onChange={handleChange}
+            <select className=/* "task__status task-list__status" */{statusClass} onChange={handleChange}
               name="status" value={taskData.status}>
               <option value="Ожидание">Ожидание</option>
               <option value="В работе">В работе</option>

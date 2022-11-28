@@ -45,43 +45,14 @@ export default class Api {
     .then(this._checkServerResponse);
   }
 
-  getUserData() {
-    return fetch(`${this._url}/users/me`, {
-      headers: this._headers
-    })
-    .then(this._checkServerResponse);
-  }
-
-  saveUserData(data) {
-    return fetch(`${this._url}/users/me`, {
-      method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify(data)
-    })
-    .then(this._checkServerResponse);
-  }
-
-  authorize(email, password) {
-    return fetch(`${this._url}/signin`, {
+  editTask(data) {
+    return fetch(`${this._url}/_method=PUT`, {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email, password})
+      body: data
     })
     .then(this._checkServerResponse);
-  };
+  }
 
-  getContent(token) {
-    return fetch(`${this._url}/users/me`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(this._checkServerResponse);
-  };
+
 
 }
