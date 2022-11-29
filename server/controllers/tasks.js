@@ -13,11 +13,11 @@ const getTasks = (req, res, next) => {
 
 const createTask = (req, res) => {
   const file = (req.files.length > 0) ? 'http://localhost:3005/' + 'files/' + req.files[0].filename : '';
-  const filName = (req.files.length > 0) ? req.files[0].originalname : '';
-  const filPath = (req.files.length > 0) ? 'public/files/' + req.files[0].filename: '';
+  const fileName = (req.files.length > 0) ? req.files[0].originalname : '';
+  const filePath = (req.files.length > 0) ? 'public/files/' + req.files[0].filename: '';
   const { title, description, term, status  } = req.body;
 
-  Task.create({ title, description, file: file, term, status, fileName: filName, filePath: filPath})
+  Task.create({ title, description, file, term, status, fileName, filePath})
     .then((card) => res.send(card))
     .catch((err) => {
       throw err;
@@ -54,12 +54,12 @@ const deleteTask = (req, res, next) => {
 const editTask = (req, res, next) => {
   const { title, description, term, status, id } = req.body;
   const file = (req.files.length > 0) ? 'http://localhost:3005/' + 'files/' + req.files[0].filename : req.body.file;
-  const filName = (req.files.length > 0) ? req.files[0].originalname : req.body.fileName;
-  const filPath = (req.files.length > 0) ? 'public/files' + req.files[0].filename: '';
+  const fileName = (req.files.length > 0) ? req.files[0].originalname : req.body.fileName;
+  const filePath = (req.files.length > 0) ? 'public/files' + req.files[0].filename: '';
 
   Task.findByIdAndUpdate(
     id,
-    { title, description, file, term, status, filName, filPath },
+    { title, description, file, term, status, fileName, filePath },
     {
       new: true,
       runValidators: true,

@@ -7,16 +7,17 @@ import dayjs from 'dayjs';
 
 function Task(props) {
 
-  const [isValid, setIsValid] = React.useState(false);
+  const [fileName, setFileName] = React.useState('');
+  const [fileLatName, setFileLatName] = React.useState('');
   const [fileData, setFileData] = React.useState('');
   const [taskData, setTaskData] = React.useState({
     title: '',
     description: '',
     term: dayjs(),
-    status: ''
+    status: '',
+    fileName: ''
   })
-  const [fileName, setFileName] = React.useState('');
-  const [fileLatName, setFileLatName] = React.useState('');
+
 
   React.useEffect(() => {
     clearInputs();
@@ -113,7 +114,7 @@ function Task(props) {
   }
 
   return (
-    <div className={activeTask} /* onClick={closePopup} */>
+    <div className={activeTask}>
       <form className={activeForm} noValidate onSubmit={submitSave}>
         <div className="popup__container">
 
@@ -133,15 +134,15 @@ function Task(props) {
             <img src={uploadLogo} className="popup__img" alt="upload"></img>
             <input className="popup__input-upload" id="popup__input" type="file" onChange={handleFileChange}/>
             <label className="popup__label-upload" htmlFor="popup__input">Выберите файл</label>
-            {/* <span className="popup__file-name">{fileName}</span> */}
-            <a className="popup__file-name" href={taskData.file} download>{taskData.fileName}</a>
+            <a className="popup__file-name" href={taskData.file} download>
+              {fileName !== '' ? fileName : taskData.fileName}</a>
           </div>
 
           <div className="popup__info-container">
             <input type="date" className="task__term task-list__term" id="term" name="term"
               value={dayjs(taskData.term).format('YYYY-MM-DD')} onChange={handleChange} />
 
-            <select className=/* "task__status task-list__status" */{statusClass} onChange={handleChange}
+            <select className={statusClass} onChange={handleChange}
               name="status" value={taskData.status}>
               <option value="Ожидание">Ожидание</option>
               <option value="В работе">В работе</option>

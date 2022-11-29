@@ -117,7 +117,6 @@ function App() {
   }, [])
 
   function completeTask(task) {
-    console.log(task.status)
     const type = task.status === 'Выполнено' ? 'В работе' : 'Выполнено';
     let newObj = {};
     newObj = {
