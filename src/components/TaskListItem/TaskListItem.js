@@ -7,31 +7,51 @@ import deletetLogo from '../../images/free-icon-delete-4974628.png';
 
 function TaskListItem(props) {
 
+  const [taskData, setTaskData] = React.useState({
+    term: props.task.term,
+    status: props.task.status
+  })
+
   function openTask() {
     props.onTaskClick(props.task);
   }
 
   function handleChange(e) {
     const {name, value} = e.target;
-    /* setTaskData({
+    setTaskData({
       ...taskData,
       [name]: value
-    }); */
+    });
+    props.editTaskField({ [name]: value }, props.task);
   }
 
   function openPopupDel() {
     props.onDeleteClick(props.task);
   }
 
-  const statusClass = (props.status === 'В работе') ? 'task-list__status task-list__status_pending' :
-    (props.status === 'Выполнено') ? 'task-list__status task-list__status_complete' : 'task-list__status';
+  function completeTask() {
+    props.onCompleteClick(props.task);
+  }
+
+  React.useEffect(() => {
+    setTaskData({
+      term: props.task.term,
+      status: props.task.status
+    })
+  }, [props.taskList])
+
+  const statusClass = (taskData.status === 'В работе') ? 'task-list__status task-list__status_pending' :
+    (taskData.status === 'Выполнено') ? 'task-list__status task-list__status_complete' : 'task-list__status';
+
+  const completeClass = (props.task.status === 'Выполнено') ? 'task-list__complete-logo task-list__complete-logo_active' :
+    'task-list__complete-logo';
 
   return (
     <li className="task-list__item">
       <div className="task-list__container">
 
-        <button className="task__btn task-list__btn" title="выполнить">
-          <img src={completeLogo} alt="complete" className="task-list__complete-logo"></img>
+        <button className="task__btn task-list__btn" title="выполнить" onClick={completeTask}>
+          <img src={completeLogo} alt="complete" className={completeClass}></img>
         </button>
 
         <h3 className="task__title task-list__title" onClick={openTask} title="открыть задачу">{props.title}</h3>
@@ -43,9 +63,9 @@ function TaskListItem(props) {
       </div>
 
       <input type="date" className="task__term task-list__term" id="term" name="term"
-        value={dayjs(props.term).format('YYYY-MM-DD')} onChange={handleChange}/>
+        value={dayjs(taskData.term).format('YYYY-MM-DD')} onChange={handleChange}/>
 
-      <select className={statusClass} name="status" value={props.status} onChange={handleChange}>
+      <select className={statusClass} name="status" value={taskData.status} onChange={handleChange}>
         <option value="Ожидание">Ожидание</option>
         <option value="В работе">В работе</option>
         <option value="Выполнено">Выполнено</option>

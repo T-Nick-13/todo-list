@@ -16,13 +16,10 @@ function App() {
   const [activePopupDel, setActivePopupDel] = React.useState(false);
 
   const api = new Api ({
-    baseUrl: MAIN_API,
-    /* headers: {
-      'Content-Type': 'application/json'
-    }, */
+    baseUrl: MAIN_API
   })
 
-  React.useEffect(() => {
+  function getData() {
     Promise.all([
       api.getTasks()
     ])
@@ -33,6 +30,10 @@ function App() {
     .catch((err) => {
       console.log(err);
     })
+  }
+
+  React.useEffect(() => {
+    getData();
   }, [])
 
   function closePopup() {
@@ -64,6 +65,7 @@ function App() {
     if (task) {
       api.editTask(data)
         .then(() => {
+          getData();
           closePopup();
         })
         .catch((err) => {
@@ -72,6 +74,7 @@ function App() {
     } else {
       api.createTask(data)
         .then(() => {
+          getData();
           closePopup();
         })
         .catch((err) => {
@@ -84,7 +87,7 @@ function App() {
 
     api.deleteTask(task._id)
       .then(() => {
-        console.log(task._id);
+        getData();
         closePopup();
       })
       .catch((err) => {
@@ -113,6 +116,41 @@ function App() {
     document.addEventListener('click', handleOverlayClose);
   }, [])
 
+  function completeTask(task) {
+    console.log(task.status)
+    const type = task.status === 'Выполнено' ? 'В работе' : 'Выполнено';
+    let newObj = {};
+    newObj = {
+      status: type,
+      term: task.term
+    };
+    api.editField({ status: type, term: task.term }, task._id)
+      .then(() => {
+        getData();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  function editTaskField(taskData, task) {
+    const status = taskData.status === undefined ? task.status : taskData.status;
+    const term = taskData.term === undefined ? task.term : taskData.term;
+    let newObj = {};
+    newObj = {
+      status,
+      term
+    };
+
+    api.editField(newObj, task._id)
+      .then(() => {
+        getData();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   return (
     <div className="page">
       <div className="page__container">
@@ -123,6 +161,8 @@ function App() {
           openTask={openTask}
           taskList={taskList}
           openPopupDel={openPopupDel}
+          completeTask={completeTask}
+          editTaskField={editTaskField}
         />
         <Task
           activeTask={activeTask}

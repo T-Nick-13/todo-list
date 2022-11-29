@@ -32,6 +32,7 @@ const deleteTask = (req, res, next) => {
     .then((task) => {
       task.remove()
         .then((task) => {
+          if (task.filePath) {
           fs.unlink(task.filePath, function(err){
             if (err) {
               console.log(err);
@@ -39,6 +40,7 @@ const deleteTask = (req, res, next) => {
               console.log("Файл удалён");
             }
           })
+        }
         })
         .then((task) => res.send({ task }))
         .catch(next);
@@ -78,7 +80,34 @@ const editTask = (req, res, next) => {
     .catch(next);
 };
 
+const editField = (req, res, next) => {
+  const { term, status } = req.body;
+  const { taskId } = req.params;
+
+  Task.findByIdAndUpdate(
+    taskId,
+    { term, status },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .then((u) => {
+      if (!u) {
+        throw new NotFound('Задача не найдена');
+      }
+      return res.send(u);
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new BadRequest('Введены некорректные данные');
+      }
+      throw err;
+    })
+    .catch(next);
+};
+
 
 module.exports = {
-  createTask, getTasks, deleteTask, editTask
+  createTask, getTasks, deleteTask, editTask, editField
 };

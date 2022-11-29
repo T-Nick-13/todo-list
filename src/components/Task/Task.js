@@ -12,7 +12,7 @@ function Task(props) {
   const [taskData, setTaskData] = React.useState({
     title: '',
     description: '',
-    term: '',
+    term: dayjs(),
     status: ''
   })
   const [fileName, setFileName] = React.useState('');
@@ -50,7 +50,7 @@ function Task(props) {
       setTaskData({
         title: '',
         description: '',
-        term: '',
+        term: dayjs(),
         status: '',
       })
       setFileData('');

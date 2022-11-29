@@ -1,9 +1,6 @@
 export default class Api {
   constructor({ baseUrl, headers }) {
     this._url = baseUrl;
-    /* this._headers = {
-      'Content-Type': 'application/json'
-    }; */
   }
 
   getHeaders() {
@@ -48,6 +45,18 @@ export default class Api {
     return fetch(`${this._url}/_method=PUT`, {
       method: 'POST',
       body: data
+    })
+    .then(this._checkServerResponse);
+  }
+
+  editField(data, taskId) {
+    return fetch(`${this._url}/${taskId}`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+
     })
     .then(this._checkServerResponse);
   }

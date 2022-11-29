@@ -48,7 +48,11 @@
   transition: var(--standart-transition);
 }
 
-/* .task-list__btn:hover  */.task-list__complete-logo:hover {
+.task-list__complete-logo_active {
+  opacity: 1;
+}
+
+.task-list__complete-logo:hover {
   opacity: 1;
 }
 

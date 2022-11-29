@@ -16,6 +16,9 @@ function TaskList(props) {
             term={i.term}
             status={i.status}
             onDeleteClick={props.openPopupDel}
+            onCompleteClick={props.completeTask}
+            editTaskField={props.editTaskField}
+            taskList={props.taskList}
           />
         )
       })}
