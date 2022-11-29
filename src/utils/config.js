@@ -1,1 +1,1 @@
-export const MAIN_API = "http://localhost:3005";
+export const MAIN_API = "https://api.todo.netitov.ru";

@@ -21,7 +21,9 @@ export default class Api {
 
   getTasks() {
     return fetch(`${this._url}`, {
-      headers: this._headers
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     .then(this._checkServerResponse);
   }

@@ -1,7 +1,7 @@
 # Todo-list
 
-Ссылка на сервис:
-API:
+Ссылка на сервис: https://todo.netitov.ru
+API: https://api.todo.netitov.ru
 
 ## Суть проекта
 
