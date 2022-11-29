@@ -1,6 +1,6 @@
 # Todo-list
 
-Ссылка на сервис: https://todo.netitov.ru
+Ссылка на сервис: https://todo.netitov.ru  
 API: https://api.todo.netitov.ru
 
 ## Суть проекта
@@ -13,4 +13,3 @@ API: https://api.todo.netitov.ru
 - получение списка задач через API
 - редактирование задачи
 - прикрепление файла к задаче
-
