@@ -10,7 +10,6 @@ import PopupDel from '../PopupDel/PopupDel';
 function App() {
 
   const [activeTask, setActiveTask] = React.useState(false);
-  const [newActiveTask, setNewActiveTask] = React.useState(false);
   const [taskList, setTaskList] = React.useState([]);
   const [task, setTask] = React.useState();
   const [activePopupDel, setActivePopupDel] = React.useState(false);
@@ -19,6 +18,7 @@ function App() {
     baseUrl: MAIN_API
   })
 
+  /**Получение списка задач с сервера */
   function getData() {
     Promise.all([
       api.getTasks()
@@ -36,16 +36,25 @@ function App() {
     getData();
   }, [])
 
+  /**Закрытие модальных окон */
   function closePopup() {
     setActiveTask(false);
     setActivePopupDel(false);
   }
 
+  /**
+   * Открытие задачи по клику
+   * @param {object} task - открываемая задача
+  */
   function openTask(task) {
     setActiveTask(true);
     setTask(task);
   }
 
+  /**
+   * Создание/обновление задачи
+   * @param {object} task - открытвая задача. Если параметр заполнен, задача обновляется. Если нет - создается ноавя
+  */
   function createTask(taskData, fileData, fileLatName, task) {
 
     const data = new FormData();
@@ -83,6 +92,7 @@ function App() {
     }
   }
 
+  /**Удаление задачи*/
   function deleteTask(task) {
 
     api.deleteTask(task._id)
@@ -96,11 +106,13 @@ function App() {
 
   }
 
+  /**Открытие попап - подтверждение удаления задачи*/
   function openPopupDel(task) {
     setActivePopupDel(true);
     setTask(task);
   }
 
+  /**Закрытие модальных окон по кнопке Escape и клику по оверлей*/
   React.useEffect(() => {
     function handleEscClose(e) {
       if (e.key === 'Escape') {
@@ -116,13 +128,9 @@ function App() {
     document.addEventListener('click', handleOverlayClose);
   }, [])
 
+  /**Выполнение задачи по клику на кнопку*/
   function completeTask(task) {
     const type = task.status === 'Выполнено' ? 'В работе' : 'Выполнено';
-    let newObj = {};
-    newObj = {
-      status: type,
-      term: task.term
-    };
     api.editField({ status: type, term: task.term }, task._id)
       .then(() => {
         getData();
@@ -132,6 +140,7 @@ function App() {
       })
   }
 
+  /**Редактирование задачи без ее открытия (через кнопке в общем списке задач)*/
   function editTaskField(taskData, task) {
     const status = taskData.status === undefined ? task.status : taskData.status;
     const term = taskData.term === undefined ? task.term : taskData.term;

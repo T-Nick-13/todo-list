@@ -18,7 +18,7 @@ function Task(props) {
     fileName: ''
   })
 
-
+  /**Сброс заполненных и не сохраненных полей при изменении задачи*/
   React.useEffect(() => {
     clearInputs();
   }, [props.task]);
@@ -28,6 +28,7 @@ function Task(props) {
   const statusClass = (taskData.status === 'В работе') ? 'task-list__status task-list__status_pending' :
     (taskData.status === 'Выполнено') ? 'task-list__status task-list__status_complete' : 'task-list__status';
 
+  /**Проверка загружаемого файла на ограничения по размеру*/
   function checkFileType(file) {
     if (file.size <= 5242880) {
       const name = translit(file.name);
@@ -37,6 +38,7 @@ function Task(props) {
       } else alert(`Размер файла должен быть до 5мб. Текущий размер ${file.size}`);
   }
 
+  /**Проверка загружаемого файла на ограничения по размеру*/
   function clearInputs() {
     if (props.task) {
       setTaskData({
@@ -60,15 +62,18 @@ function Task(props) {
 
   }
 
+  /**Закрытие модального окна с формой задачи и очистка заполненных полей */
   function closePopup() {
     props.onPopupClose();
     clearInputs();
   }
 
+  /**Обработка загруженного файла*/
   function handleFileChange(e) {
     checkFileType(e.target.files[0]);
   }
 
+  /**Обработка изменений в форме редактирования задачи*/
   function handleChange(e) {
     const {name, value} = e.target;
     setTaskData({
@@ -77,12 +82,14 @@ function Task(props) {
     });
   }
 
+  /**Сохранений изменений в задаче*/
   function submitSave(e) {
     e.preventDefault();
     props.onSubmit(taskData, fileData, fileLatName, props.task);
     clearInputs();
   }
 
+  /**Перевод названия файла в транслит для корректного сохранения на сервере*/
   function translit(word){
     var answer = '';
     var converter = {
@@ -115,13 +122,13 @@ function Task(props) {
 
   return (
     <div className={activeTask}>
-      <form className={activeForm} noValidate onSubmit={submitSave}>
+      <form className={activeForm} onSubmit={submitSave}>
         <div className="popup__container">
 
           <label className="popup__label">Название задачи
             <img src={taskLogo} className="popup__img" alt="task"></img>
             <input id="title" className="popup__input" name="title" type="text" onChange={handleChange}
-              value={taskData.title}/>
+              value={taskData.title} minLength="2" maxLength="100" required/>
           </label>
 
           <label className="popup__label popup__label_text">Описание

@@ -12,10 +12,14 @@ function TaskListItem(props) {
     status: props.task.status
   })
 
-  function openTask() {
-    props.onTaskClick(props.task);
+  /**Обработка клика по задаче для ее открытия. Исключается клик по кнопке-выполнения*/
+  function openTask(e) {
+    if (!e.target.classList.contains('task-list__complete-logo')) {
+      props.onTaskClick(props.task);
+    }
   }
 
+  /**Обработка изменений в форме редактирования задачи*/
   function handleChange(e) {
     const {name, value} = e.target;
     setTaskData({
@@ -25,14 +29,17 @@ function TaskListItem(props) {
     props.editTaskField({ [name]: value }, props.task);
   }
 
+  /**Обработка клика по кнопке удаления для открытия попап подтверждения удаления*/
   function openPopupDel() {
     props.onDeleteClick(props.task);
   }
 
+  /**Обработка клика по кнопке выполнения задачи*/
   function completeTask() {
     props.onCompleteClick(props.task);
   }
 
+  /**Обновление значений срока и статуса задачи при изменении списка задач*/
   React.useEffect(() => {
     setTaskData({
       term: props.task.term,
@@ -40,21 +47,24 @@ function TaskListItem(props) {
     })
   }, [props.taskList])
 
-  const statusClass = (taskData.status === 'В работе') ? 'task-list__status task-list__status_pending' :
+  const statusClass = (taskData.status === 'В работе') ? 'task-list__status task-list__status_pending ' :
     (taskData.status === 'Выполнено') ? 'task-list__status task-list__status_complete' : 'task-list__status';
 
   const completeClass = (props.task.status === 'Выполнено') ? 'task-list__complete-logo task-list__complete-logo_active' :
     'task-list__complete-logo';
 
+    const titleClass = (props.task.status === 'Выполнено') ? 'task-list__title task-list__title_complete' :
+    'task-list__title';
+
   return (
     <li className="task-list__item">
-      <div className="task-list__container">
+      <div className="task-list__container" onClick={openTask} title="открыть задачу" >
 
-        <button className="task__btn task-list__btn" title="выполнить" onClick={completeTask}>
+        <button className="task-list__btn" title="выполнить" onClick={completeTask}>
           <img src={completeLogo} alt="complete" className={completeClass}></img>
         </button>
 
-        <h3 className="task__title task-list__title" onClick={openTask} title="открыть задачу">{props.title}</h3>
+        <h3 className={titleClass}>{props.title}</h3>
       </div>
 
       <div className="task-list__tools">
@@ -65,7 +75,7 @@ function TaskListItem(props) {
       <input type="date" className="task__term task-list__term" id="term" name="term"
         value={dayjs(taskData.term).format('YYYY-MM-DD')} onChange={handleChange}/>
 
-      <select className={statusClass} name="status" value={taskData.status} onChange={handleChange}>
+      <select className={`${statusClass} task-list__status-list`} name="status" value={taskData.status} onChange={handleChange}>
         <option value="Ожидание">Ожидание</option>
         <option value="В работе">В работе</option>
         <option value="Выполнено">Выполнено</option>
